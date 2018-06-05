@@ -1,0 +1,3 @@
+to compile this problem run:
+
+g++ problem3.cc -o problem3
