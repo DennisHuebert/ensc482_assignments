@@ -10,7 +10,9 @@ const int decisionMatrix[4][4] = {
         {10, 30, 0, 0}
 };
 
-struct customType{
+const double alpha = 0.30;
+
+struct customType {
     double decisionVal;
     int row;
 };
@@ -26,13 +28,13 @@ string decideReturnVal(int a){
                 break;
         case 3: returnVal = "a4";
                 break;
-        default: returnVal = "ERROR";
+        default: returnVal = "ERROR: Invalid Act\n";
     }
     return returnVal;
 }
 
 string maximumRule(void){
-    double temp = 0.0;
+    int temp = 9999;
     string returnVal = "";
     customType a;
     a.decisionVal = 0.0;
@@ -40,13 +42,14 @@ string maximumRule(void){
 
     for(int i = 0; i < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); i++) {
         for(int j = 0; j < sizeof(decisionMatrix[0])/sizeof(int); j++){
-            temp += decisionMatrix[i][j]*0.25;
+            if(decisionMatrix[i][j] < temp)
+                temp = decisionMatrix[i][j];
         }
         if(temp > a.decisionVal){
             a.decisionVal = temp;
             a.row = i;
         }
-        temp = 0.0;
+        temp = 9999;
     }
     returnVal = decideReturnVal(a.row);
     return returnVal;
@@ -119,12 +122,73 @@ string minimaxRegret(){
     
     for(int i = 0; i < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); i++)
         delete[] regretTable[i];
-
     delete[] regretTable;
     regretTable = NULL;
 
     returnVal = decideReturnVal(a.row);
 
+    return returnVal;
+}
+
+string optimismPessimism(){
+    int maxVal = -9999;
+    int minVal = 9999;
+    double tempDecisionVal;
+    int minMaxMatrixVals[sizeof(decisionMatrix)/sizeof(decisionMatrix[0])][2];
+    string returnVal = "";
+    customType a;
+
+    for(int i = 0; i < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); i++) {
+        for(int j = 0; j < sizeof(decisionMatrix[0])/sizeof(int); j++){
+            if(decisionMatrix[i][j] > maxVal)
+                maxVal = decisionMatrix[i][j];
+            if(decisionMatrix[i][j] < minVal)
+                minVal = decisionMatrix[i][j];
+        }
+        minMaxMatrixVals[i][0] = minVal;
+        minMaxMatrixVals[i][1] = maxVal;
+        minVal = 9999;
+        maxVal = -9999;
+    }
+
+    /*cout << endl << endl;
+
+    for(int i = 0; i < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); i++){
+        for(int j = 0; j < 2; j++)
+            cout << minMaxMatrixVals[i][j] << " ";
+        cout << endl;
+    }*/
+    for(int i = 0; i < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); i++){
+        tempDecisionVal = alpha*minMaxMatrixVals[i][1] + (1-alpha)*minMaxMatrixVals[i][0];
+        if(a.decisionVal < tempDecisionVal){
+            a.decisionVal = tempDecisionVal;
+            a.row = i;
+        }
+    }
+    
+
+    returnVal = decideReturnVal(a.row);
+    return returnVal;
+}
+
+string principleOfInsufficientReason(){
+    const double probability = 1/sizeof(decisionMatrix[0])/sizeof(int);
+    double temp;
+    string returnVal = "";
+    customType a;
+
+    for(int i = 0; i < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); i++) {
+        for(int j = 0; j < sizeof(decisionMatrix[0])/sizeof(int); j++){
+            temp += decisionMatrix[i][j]*probability;
+        }
+        if(temp > a.decisionVal){
+            a.decisionVal = temp;
+            a.row = i;
+        }
+        temp = 0.0;
+    }
+    
+    returnVal = decideReturnVal(a.row);
     return returnVal;
 }
 
@@ -150,8 +214,10 @@ int main(void)
                     break;
             case 3: cout << endl << "The act that should be chosen is " << minimaxRegret() << " according to the minimax regret rule." << endl;
                     break;
-            case 4:
-            case 5: 
+            case 4: cout << endl << "The act that should be chosen assuming an alpha value of " << alpha << " is " << optimismPessimism() << " according to the optimism-pessimism rule." << endl;
+                    break;
+            case 5: cout << endl << "The act that should be chosen is " << principleOfInsufficientReason() << " according to the principle of insufficient reason." << endl;
+                    break;
             default: continueCalc = false;
                     break;
         }
