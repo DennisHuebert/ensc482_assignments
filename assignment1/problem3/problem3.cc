@@ -15,6 +15,22 @@ struct customType{
     int row;
 };
 
+string decideReturnVal(int a){
+    string returnVal = "";
+    switch(a){
+        case 0: returnVal = "a1";
+                break;
+        case 1: returnVal = "a2";
+                break;
+        case 2: returnVal = "a3";
+                break;
+        case 3: returnVal = "a4";
+                break;
+        default: returnVal = "ERROR";
+    }
+    return returnVal;
+}
+
 string maximumRule(void){
     double temp = 0.0;
     string returnVal = "";
@@ -32,16 +48,7 @@ string maximumRule(void){
         }
         temp = 0.0;
     }
-    switch(a.row){
-        case 0: returnVal = "a1";
-                break;
-        case 1: returnVal = "a2";
-                break;
-        case 2: returnVal = "a3";
-                break;
-        case 3: returnVal = "a4";
-                break;
-    }
+    returnVal = decideReturnVal(a.row);
     return returnVal;
 }
 
@@ -61,73 +68,63 @@ string maximax(void){
         }
         temp = 0.0;
     }
-    switch(a.row){
-        case 0: returnVal = "a1";
-                break;
-        case 1: returnVal = "a2";
-                break;
-        case 2: returnVal = "a3";
-                break;
-        case 3: returnVal = "a4";
-                break;
-    }
+    returnVal = decideReturnVal(a.row);
     return returnVal;
 }
 
-string minimaxRegret(){
-    double temp = 0.0;
-    string returnVal = "";
-    customType *a = new customType;
-    int regretTable[sizeof(decisionMatrix)/sizeof(decisionMatrix[0])][sizeof(decisionMatrix[0])/sizeof(int)];
-    int maxVals[sizeof(decisionMatrix[0])/sizeof(int)];
-    a -> decisionVal = 0.0;
-    a -> row = 0;
-
-    cout << endl << "test1" << endl;
-
-    for(int i = 0; i < sizeof(decisionMatrix[0])/sizeof(int); i++){
-        for(int j = 0; j < sizeof(maxVals); j++){
-            if(maxVals[i] < decisionMatrix[j][i])
-                maxVals[i] = decisionMatrix[j][i];
-        }
-    }
-
-    cout << endl << "test2" << endl;
-
-    for(int i = 0; i < sizeof(decisionMatrix[0])/sizeof(int); i++){
-        for(int j = 0; j < sizeof(maxVals); j++){
-            regretTable[j][i] = maxVals[i] - decisionMatrix[j][i];
-        }
-    }
-
-    cout << endl << "test3" << endl;
-
-    for(int i = 0; i < sizeof(regretTable)/sizeof(regretTable[0]); i++) {
-        for(int j = 0; j < sizeof(regretTable[0])/sizeof(int); j++){
-            if(a -> decisionVal < regretTable[i][j])
-                a -> decisionVal = regretTable[i][j];
-                a -> row = i;
-        }
-    }
-
-    cout << endl << "test4" << endl;
-
-    cout << endl << "row: " << a -> row << endl;
-
-    switch(a -> row){
-        case 0: returnVal = "a1";
-                break;
-        case 1: returnVal = "a2";
-                break;
-        case 2: returnVal = "a3";
-                break;
-        case 3: returnVal = "a4";
-                break;
-    }
-
-    cout << endl << "return val " << returnVal << endl;
-    delete a;
+int** createRegretTable(){
     
+    int** regretTable = 0;
+    regretTable = new int*[sizeof(decisionMatrix)/sizeof(decisionMatrix[0])];
+    for(int i = 0; i < sizeof(decisionMatrix[0])/sizeof(int); i++){
+        regretTable[i] = new int[sizeof(decisionMatrix[0])/sizeof(int)];
+    }
+
+    int maxColVals[sizeof(decisionMatrix[0])/sizeof(int)] = {0, 0, 0, 0};
+
+    for(int i = 0; i < sizeof(decisionMatrix[0])/sizeof(int); i++){
+        for(int j = 0; j < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); j++){
+            if(maxColVals[i] < decisionMatrix[j][i])
+                maxColVals[i] = decisionMatrix[j][i];
+        }
+    }
+
+    for(int i = 0; i < sizeof(decisionMatrix[0])/sizeof(int); i++){
+        for(int j = 0; j < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); j++){
+            regretTable[j][i] = maxColVals[i] - decisionMatrix[j][i];
+        }
+    }
+
+    return regretTable;
+}
+
+string minimaxRegret(){
+    int** regretTable = createRegretTable();
+    string returnVal = "";
+    int temp = -9999;
+    customType a;
+    a.decisionVal = 9999;
+
+    for(int i = 0; i < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); i++) {
+        for(int j = 0; j < sizeof(decisionMatrix[0])/sizeof(int); j++){
+            if(temp < regretTable[i][j])
+                temp = regretTable[i][j];
+        }
+        if(a.decisionVal > temp){
+            a.decisionVal = temp;
+            a.row = i;
+        }
+        temp = -9999;
+    }
+    
+    for(int i = 0; i < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); i++)
+        delete[] regretTable[i];
+
+    delete[] regretTable;
+    regretTable = NULL;
+
+    returnVal = decideReturnVal(a.row);
+
     return returnVal;
 }
 
@@ -143,7 +140,7 @@ int main(void)
         cout << "c) Enter 3 for minimax regret" << endl;
         cout << "d) Enter 4 for the optimism-pessimism rule" << endl;
         cout << "e) Enter 5 for the principle of insufficient reason" << endl << endl;
-        cout << "Or 6 to exit..." << endl << endl;
+        cout << "Or any other key to exit..." << endl << endl;
         cin >> userInput;
         
         switch(userInput){
@@ -155,7 +152,7 @@ int main(void)
                     break;
             case 4:
             case 5: 
-            case 6: continueCalc = false;
+            default: continueCalc = false;
                     break;
         }
     }
