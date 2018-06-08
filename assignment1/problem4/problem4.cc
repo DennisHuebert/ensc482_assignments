@@ -75,7 +75,6 @@ void lineSegmentsAndText(void){
         glVertex2i(1100, 100);
     glEnd();
 
-
     drawText(text[0].data(), text[0].size(), 400, 1000);
     drawText(text[1].data(), text[1].size(), 400, 400);
     drawText(text[2].data(), text[2].size(), 1100, 1300);
@@ -89,14 +88,12 @@ int main(int argc, char** argv){
     string betNumber;
     bool continuePlaying = true;
     cout << endl << "~~~~~~~~~~~~~~~~~~~WELCOME TO THE ROULETTE GAME~~~~~~~~~~~~~~~~~~~";
-    //while(continuePlaying){
     cout << "\n\n";
     cout << "Please enter the amount of money you wish to bet" << endl;
     cin >> userBetAmount;
     cout << "Please enter the number you wish to bet on" << endl;
     cin >> betNumber;
     playRoulette(userBetAmount, betNumber); 
-    //}
     createDecisionMatrix();
 
     glutInit(&argc, argv);

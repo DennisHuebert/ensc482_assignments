@@ -1,0 +1,7 @@
+To compile problem2a.cc:
+
+g++ problem2a.cc -o problem2a
+
+To compile problem2b.cc
+
+g++ problem2b.cc -lm -lglut -lGL -lGLU -o problem2b

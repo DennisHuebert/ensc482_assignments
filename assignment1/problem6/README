@@ -1,0 +1,3 @@
+To compile problem6.cc:
+
+g++ problem6.cc -o problem6
