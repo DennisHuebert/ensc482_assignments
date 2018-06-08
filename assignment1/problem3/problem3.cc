@@ -151,14 +151,8 @@ string optimismPessimism(){
         maxVal = -9999;
     }
 
-    /*cout << endl << endl;
-
-    for(int i = 0; i < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); i++){
-        for(int j = 0; j < 2; j++)
-            cout << minMaxMatrixVals[i][j] << " ";
-        cout << endl;
-    }*/
-    for(int i = 0; i < sizeof(decisionMatrix)/sizeof(decisionMatrix[0]); i++){
+    for(int i = 0; i < sizeof(decisionMatrix)/sizeof(
+        decisionMatrix[0]); i++){
         tempDecisionVal = alpha*minMaxMatrixVals[i][1] + (1-alpha)*minMaxMatrixVals[i][0];
         if(a.decisionVal < tempDecisionVal){
             a.decisionVal = tempDecisionVal;
@@ -166,7 +160,6 @@ string optimismPessimism(){
         }
     }
     
-
     returnVal = decideReturnVal(a.row);
     return returnVal;
 }
