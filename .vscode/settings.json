@@ -5,6 +5,8 @@
         "system_error": "cpp",
         "type_traits": "cpp",
         "iostream": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "initializer_list": "cpp",
+        "string_view": "cpp"
     }
 }
