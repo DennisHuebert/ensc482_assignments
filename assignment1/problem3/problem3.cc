@@ -75,6 +75,7 @@ string maximax(void){
     return returnVal;
 }
 
+//Function below calculates regret and creates the regret table
 int** createRegretTable(){
     
     int** regretTable = 0;

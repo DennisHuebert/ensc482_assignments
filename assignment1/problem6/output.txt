@@ -1,0 +1,10 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prisonder's Dilemma ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The input payoff matrix is:
+
+               Player 2
+Player 1  | NC      |   C
+       NC | -2, -2  | -10, -1
+       C  | -1, -10 | -5, -5
+
+The best outcome jointly for both players is for them to both not confess.

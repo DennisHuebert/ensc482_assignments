@@ -169,7 +169,7 @@ int main(int argc, char **argv)
         CubeColours[i][2] = (input < 255) && (input > 0) ? input : 255;
     }
 
-    float* red = new float[4];//[4] = { CubeColours[0][0], CubeColours[1][0], CubeColours[2][0], CubeColours[3][0] };
+    float* red = new float[4];
 
     for(int i = 0; i < 4; i++)
         red[i] = CubeColours[i][0];

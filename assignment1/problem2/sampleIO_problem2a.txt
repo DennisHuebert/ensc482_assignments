@@ -1,0 +1,2 @@
+input: dennishuebert
+output: bdeeehinnrstu

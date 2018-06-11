@@ -1,0 +1,79 @@
+Which decision rule would you like to use?
+
+a) Enter 1 for the maximum rule
+b) Enter 2 for maximax
+c) Enter 3 for minimax regret
+d) Enter 4 for the optimism-pessimism rule
+e) Enter 5 for the principle of insufficient reason
+
+Or any other key to exit...
+
+1
+
+The act that should be chosen is a2 according to the maximum rule.
+
+Which decision rule would you like to use?
+
+a) Enter 1 for the maximum rule
+b) Enter 2 for maximax
+c) Enter 3 for minimax regret
+d) Enter 4 for the optimism-pessimism rule
+e) Enter 5 for the principle of insufficient reason
+
+Or any other key to exit...
+
+2
+
+The act that should be chosen is a3 according to the maximax rule.
+
+Which decision rule would you like to use?
+
+a) Enter 1 for the maximum rule
+b) Enter 2 for maximax
+c) Enter 3 for minimax regret
+d) Enter 4 for the optimism-pessimism rule
+e) Enter 5 for the principle of insufficient reason
+
+Or any other key to exit...
+
+3
+
+The act that should be chosen is a4 according to the minimax regret rule.
+
+Which decision rule would you like to use?
+
+a) Enter 1 for the maximum rule
+b) Enter 2 for maximax
+c) Enter 3 for minimax regret
+d) Enter 4 for the optimism-pessimism rule
+e) Enter 5 for the principle of insufficient reason
+
+Or any other key to exit...
+
+4
+
+The act that should be chosen assuming an alpha value of 0.3 is a3 according to the optimism-pessimism rule.
+
+Which decision rule would you like to use?
+
+a) Enter 1 for the maximum rule
+b) Enter 2 for maximax
+c) Enter 3 for minimax regret
+d) Enter 4 for the optimism-pessimism rule
+e) Enter 5 for the principle of insufficient reason
+
+Or any other key to exit...
+
+5
+
+The act that should be chosen is a1 according to the principle of insufficient reason.
+
+Which decision rule would you like to use?
+
+a) Enter 1 for the maximum rule
+b) Enter 2 for maximax
+c) Enter 3 for minimax regret
+d) Enter 4 for the optimism-pessimism rule
+e) Enter 5 for the principle of insufficient reason
+
+Or any other key to exit...
