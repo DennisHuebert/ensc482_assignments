@@ -1,3 +1,0 @@
-to compile this problem run:
-
-g++ problem4.cc -lm -lglut -lGL -lGLU -o problem4

@@ -76,8 +76,8 @@ void lineSegmentsAndText(void){
         }
     }
 
-    for(int i = 0; i < sizeof(PLAYER_ONE_EU)/sizeof(PLAYER_ONE_EU[0]); i += 2){
-        for(int j = 0; j < sizeof(PLAYER_ONE_EU[0])/sizeof(int); j += 2){
+    for(int i = 0; i < sizeof(PLAYER_TWO_EU)/sizeof(PLAYER_TWO_EU[0]); i += 2){
+        for(int j = 0; j < sizeof(PLAYER_TWO_EU[0])/sizeof(int); j += 2){
             glBegin(GL_LINES);
                 glVertex2i(PLAYER_TWO_EU[i][j], PLAYER_TWO_EU[i][j + 1]);
                 glVertex2i(PLAYER_TWO_EU[i + 1][j], PLAYER_TWO_EU[i + 1][j + 1]);
