@@ -7,6 +7,12 @@
         "iostream": "cpp",
         "iosfwd": "cpp",
         "initializer_list": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "vector": "cpp",
+        "atomic": "cpp",
+        "deque": "cpp",
+        "thread": "cpp",
+        "array": "cpp",
+        "unordered_map": "cpp"
     }
 }

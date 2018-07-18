@@ -7,15 +7,13 @@
 #include <string>
 #include <math.h>
 #include <iostream>
-//#include <SOIL.h>
 
 struct Node 
 {
     std::string id;
-    //int dimension;
+    int dimension;
     int xPosition;
     int yPosition;
-    int numberOfClicks = 0;
     std::vector<Node *> Neighbours;
 };
 
@@ -34,7 +32,5 @@ Node* createNode(std::string, int, int);
 void drawGraph(Graph*);
 void drawNode(Node*);
 void mouseFunction(int, int state, int x, int y);
-void changeColour(Node*);
-
 
 #endif
