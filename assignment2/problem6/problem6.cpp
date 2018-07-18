@@ -27,8 +27,13 @@ int main(int argc, char** argv){
 
 void draw() {
 
-    string text[11] = {"Nesters", "Cornerstone", "ASB", "Blusson", "Saywell", "AQ", 
-        "Library", "MBC", "Gym", "Westmall", "Click any node to highlight neighbouring paths"};
+    string text[11]; //Click any node to highlight neighbouring paths
+
+    for(int i = 0; i < myGraph -> nodesAmount; i++){
+        text[i] = myGraph -> NodeArr.at(i) -> id;
+    }
+
+    text[10] = "Click any node to highlight neighbouring paths";
 
 
     glClear(GL_COLOR_BUFFER_BIT);
