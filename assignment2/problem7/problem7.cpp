@@ -28,7 +28,6 @@ int main(int argc, char** argv){
 void draw() {
 
     string text[11];
-
     for(int i = 0; i < myGraph -> nodesAmount; i++){
         text[i] = myGraph -> NodeArr.at(i) -> id;
     }
@@ -99,41 +98,41 @@ Graph* createGraph(){
     Node *nodeSkytrain = createNode("Skytrain", 1001, 200);
     Node *nodeBasketBall = createNode("BasketBall Court", 1401, 150);
 
-    nodeHome -> Neighbours.push_back(nodePark);
-    nodeHome -> Neighbours.push_back(nodeSushi);
-    nodeHome -> Neighbours.push_back(nodeGroceryStore);
+    nodeHome -> Neighbours.insert(pair<Node*, int>(nodePark, 2));
+    nodeHome -> Neighbours.insert(pair<Node*, int>(nodeSushi, 2));
+    nodeHome -> Neighbours.insert(pair<Node*, int>(nodeGroceryStore, 4));
 
-    nodePark -> Neighbours.push_back(nodeHome);
-    nodePark -> Neighbours.push_back(nodeDentist);
-    
-    nodeSushi -> Neighbours.push_back(nodeHome);
-    nodeSushi -> Neighbours.push_back(nodeSkytrain);
-    nodeSushi -> Neighbours.push_back(nodeBasketBall);
+    nodePark -> Neighbours.insert(pair<Node*, int>(nodeHome, 2));
+    nodePark -> Neighbours.insert(pair<Node*, int>(nodeDentist, 4));
 
-    nodeGroceryStore -> Neighbours.push_back(nodeMexican);
-    nodeGroceryStore -> Neighbours.push_back(nodeHome);
+    nodeSushi -> Neighbours.insert(pair<Node*, int>(nodeHome, 2));
+    nodeSushi -> Neighbours.insert(pair<Node*, int>(nodeSkytrain, 4));
+    nodeSushi -> Neighbours.insert(pair<Node*, int>(nodeBasketBall, 3));
 
-    nodeMexican -> Neighbours.push_back(nodeGroceryStore);
-    nodeMexican -> Neighbours.push_back(nodeDentist);
+    nodeGroceryStore -> Neighbours.insert(pair<Node*, int>(nodeMexican, 3));
+    nodeGroceryStore -> Neighbours.insert(pair<Node*, int>(nodeHome, 4));
 
-    nodeDentist -> Neighbours.push_back(nodeMexican);
-    nodeDentist -> Neighbours.push_back(nodeDownTown);
-    nodeDentist -> Neighbours.push_back(nodePark);
+    nodeMexican -> Neighbours.insert(pair<Node*, int>(nodeGroceryStore, 3));
+    nodeMexican -> Neighbours.insert(pair<Node*, int>(nodeDentist, 2));
 
-    nodeDownTown -> Neighbours.push_back(nodeDentist);
-    nodeDownTown -> Neighbours.push_back(nodeSkytrain);
-    nodeDownTown -> Neighbours.push_back(nodeQuay);
+    nodeDentist -> Neighbours.insert(pair<Node*, int>(nodeMexican, 2));
+    nodeDentist -> Neighbours.insert(pair<Node*, int>(nodeDownTown, 3));
+    nodeDentist -> Neighbours.insert(pair<Node*, int>(nodePark, 4));
 
-    nodeQuay -> Neighbours.push_back(nodeDownTown);
-    nodeQuay -> Neighbours.push_back(nodeSkytrain);
+    nodeDownTown -> Neighbours.insert(pair<Node*, int>(nodeDentist, 3));
+    nodeDownTown -> Neighbours.insert(pair<Node*, int>(nodeSkytrain, 2));
+    nodeDownTown -> Neighbours.insert(pair<Node*, int>(nodeQuay, 2));
 
-    nodeSkytrain -> Neighbours.push_back(nodeQuay);
-    nodeSkytrain -> Neighbours.push_back(nodeDownTown);
-    nodeSkytrain -> Neighbours.push_back(nodeBasketBall);
-    nodeSkytrain -> Neighbours.push_back(nodeSushi);
+    nodeQuay -> Neighbours.insert(pair<Node*, int>(nodeDownTown, 2));
+    nodeQuay -> Neighbours.insert(pair<Node*, int>(nodeSkytrain, 3));
 
-    nodeBasketBall -> Neighbours.push_back(nodeSkytrain);
-    nodeBasketBall -> Neighbours.push_back(nodeSushi);
+    nodeSkytrain -> Neighbours.insert(pair<Node*, int>(nodeQuay, 3));
+    nodeSkytrain -> Neighbours.insert(pair<Node*, int>(nodeDownTown, 2));
+    nodeSkytrain -> Neighbours.insert(pair<Node*, int>(nodeBasketBall, 2));
+    nodeSkytrain -> Neighbours.insert(pair<Node*, int>(nodeSushi, 4));
+
+    nodeBasketBall -> Neighbours.insert(pair<Node*, int>(nodeSkytrain, 2));
+    nodeBasketBall -> Neighbours.insert(pair<Node*, int>(nodeSushi, 3));
 
     graph -> NodeArr.push_back(nodeHome);
     graph -> NodeArr.push_back(nodePark);
@@ -158,6 +157,27 @@ Node* createNode(string id, int x, int y){
 }
 
 void mouseFunction(int button, int state, int x, int y){
+    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
+        y = abs(y - 897);
+        if(!wasMouseClicked){
+            for(Node *node : myGraph -> NodeArr){
+                if( ((x >= node -> xPosition - 10) && (x <= node -> xPosition + 10)) && 
+                    ((y >= node -> yPosition - 10) && (y <= node -> yPosition + 10)) ){
+                        clickedNodesArray[0] = node;
+                        wasMouseClicked = true;
+                }
+            }
+        }else{
+            for(Node *node : myGraph -> NodeArr){
+                if( ((x >= node -> xPosition - 10) && (x <= node -> xPosition + 10)) && 
+                    ((y >= node -> yPosition - 10) && (y <= node -> yPosition + 10)) ){
+                        clickedNodesArray[1] = node;
+                        wasMouseClicked = false;
+                        calcualteShortestPath(clickedNodesArray[0], clickedNodesArray[1]);
+                }
+            }
+        }
+    }
 }
 
 void drawGraph(Graph *g){
@@ -165,9 +185,9 @@ void drawGraph(Graph *g){
         drawNode(g -> NodeArr.at(i));
     glBegin(GL_LINES);
         for(Node *x : g -> NodeArr){
-            for(Node *j : x -> Neighbours){
+            for(auto j : x -> Neighbours){
                 glVertex2i(x -> xPosition, x -> yPosition);
-                glVertex2i(j -> xPosition, j -> yPosition);
+                glVertex2i(j.first -> xPosition, j.first -> yPosition);
             }
         }
     glEnd();
@@ -177,4 +197,39 @@ void drawNode(Node *n){
     glBegin(GL_POINTS);
         glVertex2f(n -> xPosition, n -> yPosition);
     glEnd();
+}
+
+void calcualteShortestPath(Node *start, Node *destination){
+    vector<Node*> shortestPath;
+    shortestPath.push_back(start);
+    int temp = 1000;
+    if(start != destination){
+        while(start != destination){
+            for(auto i : start -> Neighbours){
+                if(i.first == destination){
+                    start = i.first;
+                    break;
+                } else if((abs(i.first -> xPosition - start -> xPosition) < abs(start -> xPosition - destination -> xPosition)) ||
+                          (abs(i.first -> yPosition - start -> yPosition) < abs(start -> yPosition - destination -> yPosition))) {
+                    start = i.first;
+                } else if(i.second < temp){
+                    start = i.first;
+                }
+            }
+            shortestPath.push_back(start);
+        }
+        highLightShortestPath(shortestPath);
+    }
+
+}
+
+void highLightShortestPath(vector<Node*> shortestPath){
+    glColor3f(0.0, 1.0, 0.0);
+    glBegin(GL_LINES);
+    for(int i = 0; i < shortestPath.size() - 1; i++){
+        glVertex2i(shortestPath.at(i) -> xPosition, shortestPath.at(i) -> yPosition);
+        glVertex2i(shortestPath.at(i + 1) -> xPosition, shortestPath.at(i + 1) -> yPosition);
+    }
+    glEnd();
+    glFlush();
 }

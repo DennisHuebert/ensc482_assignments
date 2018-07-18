@@ -6,23 +6,26 @@
 #include <vector>
 #include <string>
 #include <math.h>
+#include <map>
 #include <iostream>
 
 struct Node 
 {
     std::string id;
-    int dimension;
     int xPosition;
     int yPosition;
-    std::vector<Node *> Neighbours;
+    std::map<Node *, int> Neighbours;
 };
 
 struct Graph
 {
     unsigned int nodesAmount;
-    //unsigned int arcsAmount;
     std::vector<Node *> NodeArr;
 };
+
+bool wasMouseClicked = false;
+
+Node *clickedNodesArray[2];
 
 void drawText(const char*, int, int, int);
 void draw(void);
@@ -32,5 +35,7 @@ Node* createNode(std::string, int, int);
 void drawGraph(Graph*);
 void drawNode(Node*);
 void mouseFunction(int, int state, int x, int y);
+void calcualteShortestPath(Node*, Node*);
+void highLightShortestPath(std::vector<Node*>);
 
 #endif
