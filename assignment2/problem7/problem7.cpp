@@ -156,6 +156,9 @@ Node* createNode(string id, int x, int y){
     return newNode;
 }
 
+
+//Detects the clicking on the start node and the destination node and sends those two nodes to
+//Calculate the shortest path between them
 void mouseFunction(int button, int state, int x, int y){
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
         y = abs(y - 897);
@@ -180,6 +183,7 @@ void mouseFunction(int button, int state, int x, int y){
     }
 }
 
+//draws the graph similarly to problem 6
 void drawGraph(Graph *g){
     for(int i = 0; i < g -> nodesAmount; i++)
         drawNode(g -> NodeArr.at(i));
@@ -199,6 +203,8 @@ void drawNode(Node *n){
     glEnd();
 }
 
+//Given 2 nodes this function calculates the shortest path between them and sends it
+//in the form of a vector of nodes to the highlighting function
 void calcualteShortestPath(Node *start, Node *destination){
     vector<Node*> shortestPath;
     shortestPath.push_back(start);
@@ -223,6 +229,7 @@ void calcualteShortestPath(Node *start, Node *destination){
 
 }
 
+//Highlights a given path
 void highLightShortestPath(vector<Node*> shortestPath){
     glColor3f(0.0, 1.0, 0.0);
     glBegin(GL_LINES);

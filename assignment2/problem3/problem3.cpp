@@ -2,6 +2,9 @@
 
 using namespace std;
 
+//This file is almost the same as problem 2 so I wont comment the functions I already commented
+//It adds a line of best fit to the scatterplot data
+
 //g++ problem1.cpp -lm -lglut -lGL -lGLU -o problem1
 
 int main(int argc, char** argv){
@@ -70,7 +73,7 @@ void drawPlots(){
     glEnd();
 
     glColor3f(1.0, 0.0, 0.0);
-
+    
     glBegin(GL_LINES);
         glVertex2f(50.0, leastSquaresAmountPledgedNumberOfBackers.at(0) + leastSquaresAmountPledgedNumberOfBackers.at(1)*50.0);
         glVertex2f(350.0, leastSquaresAmountPledgedNumberOfBackers.at(0) + leastSquaresAmountPledgedNumberOfBackers.at(1)*56.32);
@@ -223,6 +226,8 @@ double calculateVarience(double mean, vector<float> data){
     return varience;
 }
 
+
+//This funciton calculates the slope and Y intercept of the line of best fit
 vector<float> calculateLeastSquaresCoeff(float rXY, double xMean, double yMean, double xSD, double ySD){
     vector<float> leastSquaresCoeff;
     float a, b;

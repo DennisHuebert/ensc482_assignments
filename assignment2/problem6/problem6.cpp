@@ -4,6 +4,9 @@ using namespace std;
 
 //g++ problem6.cpp -lm -lglut -lGL -lGLU -o problem6
 
+//this function displays a graph and lets the user click on different nodes and it will highlight
+//the neighbouring edges of that node
+
 Graph *myGraph = createGraph();
 
 int main(int argc, char** argv){
@@ -25,6 +28,7 @@ int main(int argc, char** argv){
     return 0;
 }
 
+//Calls draw graph and draw text
 void draw() {
 
     string text[11]; //Click any node to highlight neighbouring paths
@@ -87,6 +91,7 @@ void initRendering(){
     gluOrtho2D(0.0, 1601.0, 0.0, 897.0);
 }
 
+//creates the connected graph using node and graph structs definded in the headerfile
 Graph* createGraph(){
 
     Graph *graph = new Graph;
@@ -157,6 +162,7 @@ Node* createNode(string id, int x, int y){
     return newNode;
 }
 
+//Draws each edge connecting the graph
 void drawGraph(Graph *g){
     for(int i = 0; i < g -> nodesAmount; i++)
         drawNode(g -> NodeArr.at(i));
@@ -170,12 +176,14 @@ void drawGraph(Graph *g){
     glEnd();
 }
 
+//Draws each node as a point
 void drawNode(Node *n){
     glBegin(GL_POINTS);
         glVertex2f(n -> xPosition, n -> yPosition);
     glEnd();
 }
 
+//Detects if the user clicks on a node and calls changeColour
 void mouseFunction(int button, int state, int x, int y){
     y = abs(y - 897);
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
@@ -188,6 +196,7 @@ void mouseFunction(int button, int state, int x, int y){
     }
 }
 
+//Changes the colour of each neighbouring edges
 void changeColour(Node *n){
     if(n -> numberOfClicks % 2 == 0)
         glColor3f(0.0, 1.0, 0.0);

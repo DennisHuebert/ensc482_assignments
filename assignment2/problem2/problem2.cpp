@@ -2,7 +2,11 @@
 
 using namespace std;
 
-//g++ problem1.cpp -lm -lglut -lGL -lGLU -o problem1
+//g++ problem2.cpp -lm -lglut -lGL -lGLU -o problem2
+
+//This file creates a 3x3 scatter plot matrix of kickstarter data
+//calulcates the corrliation of the amount of money pledged, the goal amount,
+//and the number of backers the kickstarter project had
 
 int main(int argc, char** argv){
 
@@ -41,6 +45,7 @@ int main(int argc, char** argv){
     return 0;
 }
 
+//Function that is responsible for drawing the plots to the screen
 void drawPlots(){
     string text[3] = {"Goal Amount", "Number of Backers", "Amount Pledged"};
 
@@ -67,6 +72,7 @@ void drawPlots(){
     glFlush();
 }
 
+//Same as the function for problem 1, draws text to the screen
 void drawText(const char *text, int length, int x, int y){
     glMatrixMode(GL_PROJECTION);
     double *matrix = new double[16];
@@ -97,6 +103,7 @@ void initRendering()
     gluOrtho2D(WINDOW_LEFT, WINDOW_RIGHT, WINDOW_BOTTOM, WINDOW_TOP);
 }
 
+//Draws the 3x3 matrix of sub-plots
 void drawBoxMatrix(int size, int spacing, int sideLength){
     int x = spacing;
     int y = spacing;
@@ -111,6 +118,7 @@ void drawBoxMatrix(int size, int spacing, int sideLength){
     }
 }
 
+//Draws each sub-plot
 void drawBox(int sideLength, int startX, int startY){
     glBegin(GL_LINES);
         glVertex2i(startX, startY);
@@ -124,6 +132,7 @@ void drawBox(int sideLength, int startX, int startY){
     glEnd();
 }
 
+//Reads input data from a textfile
 vector<float> readData(const char* file){
     ifstream data;
     vector<float> dataVector;
@@ -140,6 +149,7 @@ vector<float> readData(const char* file){
     return dataVector;
 }
 
+//Normalizes data to fit into the size of each sub-plot
 vector<float> normalizeData(int lowerBound, int upperBound, vector<float> inputData){
     vector<float> normalizedData;
     float max = *max_element(inputData.begin(), inputData.end());
@@ -156,6 +166,7 @@ vector<float> normalizeData(int lowerBound, int upperBound, vector<float> inputD
     return normalizedData;
 }
 
+//Calulates the mean of inputed data
 double calculateMean(vector<float> data){
     double mean = 0.0;
     float sum = 0.0;
@@ -166,6 +177,7 @@ double calculateMean(vector<float> data){
     return mean;
 }
 
+//calulcates the correlation coeff between to inputed datasets
 float calculateCorrelationCoefficient(vector<float> x, vector<float> y, double xMean, double yMean){
     float numerator = 0.0;
     float sumOfSquaresX = 0.0;

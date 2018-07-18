@@ -9,6 +9,9 @@
 #include <GL/glut.h>
 #include <iomanip>
 
+//This file takes an input dataset of the number of characters in Trump's tweets and draws a histogram
+//It also compares it to the normal distrobution with the same mean and varience as trumps tweets
+
 using namespace std;
 
 const unsigned int BIN_WIDTH = 22;
@@ -78,8 +81,10 @@ int main(int argc, char** argv){
     return 1;
 }
 
+//This function is responsible for drawing out the histogram
 void histogram() {
 
+    //array of strings to print
     string text[] = {"0", "Frequency", "Number of characters per Tweet", "Bhattacharyya Distance: " + 
         to_string(bhattacharyyaDistance), "Mean: " + to_string(mean), "Standard Deviation: " + to_string(sqrt(varience))};
 
@@ -166,6 +171,7 @@ void histogram() {
     glFlush();
 }
 
+//Function that draws text to the screen
 void drawText(const char *text, int length, int x, int y){
     glMatrixMode(GL_PROJECTION);
     double *matrix = new double[16];
@@ -199,6 +205,7 @@ void initRendering()
     gluOrtho2D(WINDOW_LEFT, WINDOW_RIGHT, WINDOW_BOTTOM, WINDOW_TOP);
 }
 
+//Take the input textfile and counts the number of characters perline or per tweet
 vector<int> countChars() {
     vector<int> charCount;
     ifstream trumpTweets;
@@ -213,6 +220,7 @@ vector<int> countChars() {
     return charCount;
 }
 
+//write the lengths of each tweet to a separate textfile
 void writeDataSetToFile(vector<int> a){
     ofstream lengthOfTrumpTweets("LengthOfTrumpTweets.txt");
     for(int i = 0; i < a.size(); i++)
@@ -220,6 +228,8 @@ void writeDataSetToFile(vector<int> a){
     lengthOfTrumpTweets.close();
 }
 
+//Counts the number of tweets that fall within a certain bin width (22 in this case)
+//Have to do this because I am dealing with a large data set
 map<int, int> putIntoBins(vector<int> data){
     int currentBinMax = BIN_WIDTH;
     map<int, int> bins;
@@ -240,6 +250,7 @@ map<int, int> putIntoBins(vector<int> data){
     return bins;
 }
 
+//Calculate the mean of the number of tweets
 float calculateMean(vector<int> data){
     float mean = 0.0;
     int sum = 0;
@@ -250,6 +261,7 @@ float calculateMean(vector<int> data){
     return mean;
 }
 
+//Calulcate the varience of the number of tweets
 float calculateVarience(float mean, vector<int> data) {
     float varience = 0.0;
     int sumSquared = 0;
@@ -259,6 +271,7 @@ float calculateVarience(float mean, vector<int> data) {
     return varience;
 }
 
+//Generate a normal dist with the same mean and standard deviation as the dataset I am dealing with
 map<int, int> calcNormalDistVal(double mean, double std) {
     random_device rd{};
     mt19937 gen{rd()};
@@ -269,6 +282,7 @@ map<int, int> calcNormalDistVal(double mean, double std) {
     return hist;
 }
 
+//This function calculates the avaerage value of the normal dist within certain bin sizes (22 in this case)
 map<int, int> calcAverage(map<int, int> a) {
     map<int, int> averagedMap;
     int temp, counter;
@@ -289,6 +303,8 @@ map<int, int> calcAverage(map<int, int> a) {
     return averagedMap;
 }
 
+//This function calulates the Bhattacharyya Distance between the histogram of the data set
+//and the normal dist following the formula
 double calcBhattacharyyaDistance(map<int, int> a, map<int, int> b){
     double bhattacharyyaDistance = 0.0;
     for(int i = 0; i < a.size(); i++) {
