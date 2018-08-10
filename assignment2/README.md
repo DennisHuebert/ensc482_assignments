@@ -1,4 +1,4 @@
-The assignment is to be run on linx
+The assignment is to be run on linux
 
 To Run problem 1:
 g++ problem1.cpp -lm -lglut -lGL -lGLU -o problem1
