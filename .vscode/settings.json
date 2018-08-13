@@ -27,6 +27,7 @@
         "cwchar": "cpp",
         "cwctype": "cpp",
         "cstdint": "cpp",
-        "slist": "cpp"
+        "slist": "cpp",
+        "*.ipp": "cpp"
     }
 }

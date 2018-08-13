@@ -10,16 +10,14 @@
 #include <cmath>
 #include <GL/glut.h>
 
-const int WINDOW_LEFT = 0;
-const int WINDOW_BOTTOM = 0;
+const int WINDOW_LEFT = -60;
+const int WINDOW_BOTTOM = -60;
 const int WINDOW_RIGHT = 1500;
 const int WINDOW_TOP = 1300;
 const int WINDOW_WIDTH = WINDOW_RIGHT - WINDOW_LEFT;
 const int WINDOW_HIEGHT = WINDOW_TOP - WINDOW_BOTTOM;
 
 const char *trumpTweetData = "data/LengthOfTrumpTweets.txt";
-
-int counter = 0;
 
 // dataPairs;
 std::vector<std::pair<float, float> > dataPairs;

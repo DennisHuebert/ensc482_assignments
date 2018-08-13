@@ -13,7 +13,7 @@ int main(int argc, char** argv){
     lengthOfTrumpTweets = normalizeData(25, 1230, lengthOfTrumpTweets);
 
     for(int i = 0; i < lengthOfTrumpTweets.size(); i++)
-        dataPairs.push_back(make_pair((float)(i + 20), lengthOfTrumpTweets[i]));
+        dataPairs.push_back(make_pair((float)(i + 23), lengthOfTrumpTweets[i]));
 
     //Initially set the cluster centres to be the first 3 samples in lengthOfTrumpTweets
     //and add them to their corresponding domains
@@ -90,18 +90,34 @@ void drawText(const char *text, int length, int x, int y){
     delete[] matrix;
 }
 
+
+//This function checks if the spacebar has been pressed or not if it has it 
+//computes the new cluster centres and clears the cluster domains and calls
+//assignToCluster then draws the new cluster domains
 void keyBoardInput(unsigned char Key, int x, int y){
     if(Key == 32){
         drawClusterMeans();
-        assignToCluster(dataPairs[counter]);
+        clusterCentre1 = computeClusterCentre(clusterDomain1);
+        clusterCentre2 = computeClusterCentre(clusterDomain2);
+        clusterCentre3 = computeClusterCentre(clusterDomain3);
+        clusterDomain1.clear();
+        clusterDomain2.clear();
+        clusterDomain3.clear();
+        for(auto i : dataPairs){
+            assignToCluster(i);
+        }
         drawClustering();
-        counter++;
     }    
 }
 
 void drawInitalDataSet(){
+
+    string text[4] = {"K-Means Clustering of the number of characters in Trump's Tweets"};
+
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(0.0, 0.0, 0.0);
+
+    drawText(text[0].data(), text[0].size(), 420, 1250);
 
     glBegin(GL_LINES);
         glVertex2i(20, 0);
@@ -126,20 +142,27 @@ void drawClustering(){
         glColor3f(1.0, 0.0, 0.0);
         for(auto i : clusterDomain1)
             glVertex2f(i.first, i.second);
+    glEnd();
 
+    glBegin(GL_POINTS);
         glColor3f(0.0, 1.0, 0.0);
         for(auto i : clusterDomain2)
             glVertex2f(i.first, i.second);
+    glEnd();
 
+    glBegin(GL_POINTS);
         glColor3f(0.0, 0.0, 1.0);
         for(auto i : clusterDomain3)
             glVertex2f(i.first, i.second);
-        
+    glEnd();
+
+    glBegin(GL_POINTS);
         glColor3f(1.0, 1.0, 1.0);
         glVertex2f(clusterCentre1.first, clusterCentre1.second);
         glVertex2f(clusterCentre2.first, clusterCentre2.second);
         glVertex2f(clusterCentre3.first, clusterCentre3.second);
     glEnd();
+
     glFlush();
 }
 
@@ -173,23 +196,19 @@ vector<float> normalizeData(int lowerBound, int upperBound, vector<float> inputD
 
 //Assigns which cluster a new data point belongs to by calulcating the Euclidean distance
 //between the new data point and all 3 cluster centres. After the data point has been assigned
-//which cluster it belongs to this function adds it to the corresponding cluster vector and
-//calls to re-calculate the new cluster centre and adds the new sample to the correct domain
+//which cluster it belongs to this function adds it to the corresponding cluster domain vector
 void assignToCluster(pair<float, float> sample){
     float distanceCluster1, distanceCluster2, distanceCluster3;
     distanceCluster1 = euclideanDistance(clusterCentre1, sample);
     distanceCluster2 = euclideanDistance(clusterCentre2, sample);
     distanceCluster3 = euclideanDistance(clusterCentre3, sample);
 
-    if(distanceCluster1 <= distanceCluster2 && distanceCluster1 <= distanceCluster3){
+    if(distanceCluster1 < distanceCluster2 && distanceCluster1 < distanceCluster3){
         clusterDomain1.push_back(sample);
-        clusterCentre1 = computeClusterCentre(clusterDomain1);
-    } else if(distanceCluster2 < distanceCluster1 && distanceCluster2 <= distanceCluster3){
+    } else if(distanceCluster2 < distanceCluster1 && distanceCluster2 < distanceCluster3){
         clusterDomain2.push_back(sample);
-        clusterCentre2 = computeClusterCentre(clusterDomain2);
     } else if(distanceCluster3 < distanceCluster1 && distanceCluster3 < distanceCluster2){
         clusterDomain3.push_back(sample);
-        clusterCentre3 = computeClusterCentre(clusterDomain3);
     }
 }
 
