@@ -30,7 +30,7 @@ int main(int argc, char** argv){
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HIEGHT);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow("Problem 1");
+    glutCreateWindow("Problem 1: K-Means Clustering");
     initRendering();
     glutDisplayFunc(drawInitalDataSet);
     glutMainLoop();
@@ -110,14 +110,16 @@ void keyBoardInput(unsigned char Key, int x, int y){
     }    
 }
 
+//Inital drawing setup function
 void drawInitalDataSet(){
 
-    string text[4] = {"K-Means Clustering of the number of characters in Trump's Tweets"};
+    string text[4] = {"K-Means Clustering of the number of characters in Trump's Tweets", "Press spacebar to start clustering!"};
 
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(0.0, 0.0, 0.0);
 
     drawText(text[0].data(), text[0].size(), 420, 1250);
+    drawText(text[1].data(), text[1].size(), 200, -10);
 
     glBegin(GL_LINES);
         glVertex2i(20, 0);
@@ -137,6 +139,7 @@ void drawInitalDataSet(){
     glFlush();
 }
 
+//Draws each clustering
 void drawClustering(){
     glBegin(GL_POINTS);
         glColor3f(1.0, 0.0, 0.0);
