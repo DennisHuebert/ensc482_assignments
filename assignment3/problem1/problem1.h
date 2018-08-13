@@ -17,19 +17,24 @@ const int WINDOW_TOP = 1300;
 const int WINDOW_WIDTH = WINDOW_RIGHT - WINDOW_LEFT;
 const int WINDOW_HIEGHT = WINDOW_TOP - WINDOW_BOTTOM;
 
-const unsigned int THRESHOLD = 50;
+const char *trumpTweetData = "data/LengthOfTrumpTweets.txt";
 
-const char *amountPledgedData = "data/KickStarterData/amountPledged.txt";
-const char *numberOfBackersData = "data/KickStarterData/numberOfBackers.txt";
+// dataPairs;
+std::vector<std::pair<float, float> > clusterDomain1;
+std::vector<std::pair<float, float> > clusterDomain2;
+std::vector<std::pair<float, float> > clusterDomain3;
 
-std::vector<float> normalizedNumberOfBackers;
-std::vector<float> normalizedAmountPledged;
+std::pair<float, float> clusterCentre1, clusterCentre2, clusterCentre3;
 
 std::vector<float> readData(const char*);
 void initRendering();
 void drawText(const char*, int, int, int);
 void drawClustering();
+void keyBoardInput(unsigned char, int, int);
 std::vector<float> normalizeData(int, int, std::vector<float>);
-float euclideanDistance(std::vector<float>);
+float euclideanDistance(std::pair<float, float>, std::pair<float, float>);
+void assignToCluster(std::pair<float, float>);
+std::pair<float, float> computeClusterCentre(std::vector<std::pair<float, float> >);
+void computeClustering(std::vector<std::pair<float, float> >);
 
 #endif
