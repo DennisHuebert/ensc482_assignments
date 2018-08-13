@@ -19,7 +19,10 @@ const int WINDOW_HIEGHT = WINDOW_TOP - WINDOW_BOTTOM;
 
 const char *trumpTweetData = "data/LengthOfTrumpTweets.txt";
 
+int counter = 0;
+
 // dataPairs;
+std::vector<std::pair<float, float> > dataPairs;
 std::vector<std::pair<float, float> > clusterDomain1;
 std::vector<std::pair<float, float> > clusterDomain2;
 std::vector<std::pair<float, float> > clusterDomain3;
@@ -29,7 +32,9 @@ std::pair<float, float> clusterCentre1, clusterCentre2, clusterCentre3;
 std::vector<float> readData(const char*);
 void initRendering();
 void drawText(const char*, int, int, int);
+void drawInitalDataSet();
 void drawClustering();
+void drawClusterMeans();
 void keyBoardInput(unsigned char, int, int);
 std::vector<float> normalizeData(int, int, std::vector<float>);
 float euclideanDistance(std::pair<float, float>, std::pair<float, float>);

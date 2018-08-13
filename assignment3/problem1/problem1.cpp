@@ -7,7 +7,6 @@ using namespace std;
 int main(int argc, char** argv){
 
     vector<float> lengthOfTrumpTweets;
-    vector<pair<float, float> > dataPairs;
 
     //Read input data from textfile and store them into a vector of ints
     lengthOfTrumpTweets = readData(trumpTweetData);
@@ -25,7 +24,7 @@ int main(int argc, char** argv){
     clusterDomain2.push_back(clusterCentre2);
     clusterDomain3.push_back(clusterCentre3);
 
-    computeClustering(dataPairs);
+    //computeClustering(dataPairs);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
@@ -33,7 +32,7 @@ int main(int argc, char** argv){
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Problem 1");
     initRendering();
-    glutDisplayFunc(drawClustering);
+    glutDisplayFunc(drawInitalDataSet);
     glutMainLoop();
 
     return 1;
@@ -41,7 +40,7 @@ int main(int argc, char** argv){
 
 void initRendering()
 {
-    glClearColor(1.0, 1.0, 1.0, 0.0);
+    glClearColor(0.623, 0.639, 0.659, 0.0);
     glEnable(GL_PROGRAM_POINT_SIZE);
     glPointSize(7.0);
     glMatrixMode(GL_PROJECTION);
@@ -92,11 +91,15 @@ void drawText(const char *text, int length, int x, int y){
 }
 
 void keyBoardInput(unsigned char Key, int x, int y){
-    //if(Key == 32)
-        
+    if(Key == 32){
+        drawClusterMeans();
+        assignToCluster(dataPairs[counter]);
+        drawClustering();
+        counter++;
+    }    
 }
 
-void drawClustering(){
+void drawInitalDataSet(){
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(0.0, 0.0, 0.0);
 
@@ -111,35 +114,43 @@ void drawClustering(){
     glEnd();
 
     glBegin(GL_POINTS);
-
-        glColor3f(1.0, 0.0, 0.0);
-        for(auto i : clusterDomain1){
+        for(auto i : dataPairs)
             glVertex2f(i.first, i.second);
-        }
-
-        glColor3f(0.0, 1.0, 0.0);
-        for(auto i : clusterDomain2){
-            glVertex2f(i.first, i.second);
-        }
-
-        glColor3f(0.0, 0.0, 1.0);
-        for(auto i : clusterDomain3){
-            glVertex2f(i.first, i.second);
-        }
-
     glEnd();
 
-    /*glColor3f(1.0, 0.0, 0.0);
-    glBegin(GL_POINTS);
-        glVertex2f(0, clusterCentre1);
-        glColor3f(0.0, 1.0, 0.0);
-        glVertex2f(0, clusterCentre2);
-        glColor3f(0.0, 0.0, 1.0);
-        glVertex2f(0, clusterCentre3);
-    glEnd();*/
-
     glFlush();
-    
+}
+
+void drawClustering(){
+    glBegin(GL_POINTS);
+        glColor3f(1.0, 0.0, 0.0);
+        for(auto i : clusterDomain1)
+            glVertex2f(i.first, i.second);
+
+        glColor3f(0.0, 1.0, 0.0);
+        for(auto i : clusterDomain2)
+            glVertex2f(i.first, i.second);
+
+        glColor3f(0.0, 0.0, 1.0);
+        for(auto i : clusterDomain3)
+            glVertex2f(i.first, i.second);
+        
+        glColor3f(1.0, 1.0, 1.0);
+        glVertex2f(clusterCentre1.first, clusterCentre1.second);
+        glVertex2f(clusterCentre2.first, clusterCentre2.second);
+        glVertex2f(clusterCentre3.first, clusterCentre3.second);
+    glEnd();
+    glFlush();
+}
+
+void drawClusterMeans(){
+    glColor3f(0.623, 0.639, 0.659);
+    glBegin(GL_POINTS);
+        glVertex2f(clusterCentre1.first, clusterCentre1.second);
+        glVertex2f(clusterCentre2.first, clusterCentre2.second);
+        glVertex2f(clusterCentre3.first, clusterCentre3.second);
+    glEnd();
+    glFlush();
 }
 
 
@@ -159,12 +170,6 @@ vector<float> normalizeData(int lowerBound, int upperBound, vector<float> inputD
     }
     return normalizedData;
 }
-
-void computeClustering(vector<pair<float, float> > inputData){
-    for(auto i : inputData)
-        assignToCluster(i);
-}
-
 
 //Assigns which cluster a new data point belongs to by calulcating the Euclidean distance
 //between the new data point and all 3 cluster centres. After the data point has been assigned
@@ -207,12 +212,10 @@ pair<float, float> computeClusterCentre(vector<pair<float, float> > domain){
     int sizeOfDomain = domain.size();
     float sumX = 0;
     float sumY = 0;
-
     for(auto i : domain){
         sumX += i.first;
         sumY += i.second;
     }
-
     clusterCentre.first = sumX / sizeOfDomain;
     clusterCentre.second = sumY / sizeOfDomain;
 
