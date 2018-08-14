@@ -1,0 +1,23 @@
+This folder contains my submission for assignment 3.
+
+Each problem is in its own directory and is meant to be run on linux.
+
+to compile problem1 run in the correct directory:
+g++ problem1.cpp -lm -lglut -lGL -lGLU -o problem1
+
+to compile problem2 run in the correct directory:
+g++ problem2.cpp -lm -lglut -lGL -lGLU -o problem2
+
+to compile problem1 run in the correct directory:
+g++ problem3.cpp -lm -lglut -lGL -lGLU -o problem3
+
+For problem 1 hold space bar to see clustering
+For problem 2 press space bar once to cluster and then press enter 
+Do the same as for problem 2 for problem 3 but you enter x and y corredinates for user input data first
+
+Screenshots for all problems are located in the Screenshots directory
+
+Report is labeled report
+
+Dennis Huebert
+301200111
